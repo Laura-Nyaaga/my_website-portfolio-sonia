@@ -3,8 +3,8 @@
 "use client";
 import React from 'react';
 import { FileText, FileSpreadsheet,LucidePresentation, } from 'lucide-react';
+import Image from 'next/image';
 const FilePreview = ({ type, title }) => {
-  // Placeholder styling based on file type
   const getPreviewStyle = () => {
     switch (type) {
       case 'form':
@@ -22,7 +22,7 @@ const FilePreview = ({ type, title }) => {
 
   return (
     <div className={`rounded-lg p-4 ${getPreviewStyle()} flex items-center justify-center h-32 mb-2`}>
-      <img src="/images/sony.png" alt={`Preview for ${title}`} className="max-h-full object-contain" />
+      <Image src="/images/sony.png" alt={`Preview for ${title}`} width={100} height={100} className="max-h-full object-contain" />
     </div>
   );
 };
