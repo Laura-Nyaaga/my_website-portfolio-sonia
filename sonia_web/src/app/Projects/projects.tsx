@@ -121,7 +121,7 @@ const Projects = () => {
         {
           title: "Travel Documentation",
           type: "presentation",
-          icon: FilePresentation,
+          icon: LucidePresentation,
         }
       ]
     }
