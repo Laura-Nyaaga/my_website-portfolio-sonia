@@ -34,7 +34,7 @@ const Skills = () => {
     }
   };
 
-  const toggleSkill = (category : any, skill :any) => {
+  const toggleSkill = (category, skill) => {
     setExpandedSkills(prev => ({
       ...prev,
       [`${category}-${skill}`]: !prev[`${category}-${skill}`]
