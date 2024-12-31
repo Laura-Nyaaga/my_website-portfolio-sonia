@@ -2,9 +2,14 @@
 
 "use client";
 import React from 'react';
-import { FileText, FileSpreadsheet,LucidePresentation, } from 'lucide-react';
+import {FileText, FileSpreadsheet,LucidePresentation, LucideIcon, } from 'lucide-react';
 import Image from 'next/image';
-const FilePreview = ({ type, title }) => {
+
+type FilePreviewProps = {
+  type: "form" | "spreadsheet" | "presentation" | "document";
+  title: string;
+};
+const FilePreview: React.FC<FilePreviewProps> = ({ type, title }) => {
   const getPreviewStyle = () => {
     switch (type) {
       case 'form':
@@ -15,7 +20,7 @@ const FilePreview = ({ type, title }) => {
         return 'bg-blue-100';
       case 'presentation':
         return 'bg-orange-100';
-      default:
+      default: 
         return 'bg-gray-100';
     }
   };
@@ -27,7 +32,13 @@ const FilePreview = ({ type, title }) => {
   );
 };
 
-const AttachmentCard = ({ title, type, icon: Icon }) => (
+type AttachmentCardProps = {
+  title: string;
+  type: "form" | "spreadsheet" | "presentation" | "document";
+  icon: LucideIcon; 
+};
+
+const AttachmentCard: React.FC<AttachmentCardProps> = ({ title, type, icon: Icon }) => (
   <div className="bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
     <FilePreview type={type} title={title} />
     <div className="flex items-center space-x-2">
@@ -37,7 +48,18 @@ const AttachmentCard = ({ title, type, icon: Icon }) => (
   </div>
 );
 
-const ProjectCard = ({ title, description, date, attachments }) => (
+type ProjectCardProps = {
+  title: string;
+  description: string;
+  date: string;
+  attachments: {
+    title: string;
+    type: "form" | "spreadsheet" | "presentation" | "document";
+    icon: LucideIcon;
+  }[];
+};
+
+const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, date, attachments }) => (
   <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
     <div className="mb-6">
       <h3 className="text-xl font-semibold mb-3">{title}</h3>
@@ -67,8 +89,8 @@ const Projects = () => {
       attachments: [
         {
           title: "Workplace Survey Form",
-          type: "form",
-          icon: LucidePresentation,
+          type: "form" as "form",
+          icon: LucidePresentation as LucideIcon,
         }
       ]
     },
@@ -79,13 +101,13 @@ const Projects = () => {
       attachments: [
         {
           title: "ICU Assessment Document",
-          type: "document",
-          icon: FileText,
+          type: "document" as "document",
+          icon: FileText as LucideIcon,
         },
         {
           title: "Research Collaboration",
-          type: "document",
-          icon: FileText,
+          type: "document" as "document",
+          icon: FileText as LucideIcon,
         }
       ]
     },
@@ -96,8 +118,8 @@ const Projects = () => {
       attachments: [
         {
           title: "Expense Tracker",
-          type: "spreadsheet",
-          icon: FileSpreadsheet,
+          type: "spreadsheet" as "spreadsheet",
+          icon: FileSpreadsheet as LucideIcon,
         }
       ]
     },
@@ -108,8 +130,8 @@ const Projects = () => {
       attachments: [
         {
           title: "Marketing Analytics",
-          type: "spreadsheet",
-          icon: FileSpreadsheet,
+          type: "spreadsheet" as "spreadsheet",
+          icon: FileSpreadsheet as LucideIcon,
         }
       ]
     },
@@ -120,8 +142,8 @@ const Projects = () => {
       attachments: [
         {
           title: "Travel Documentation",
-          type: "presentation",
-          icon: LucidePresentation,
+          type: "presentation" as "presentation",
+          icon: LucidePresentation as LucideIcon,
         }
       ]
     }

@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, Microscope, Laptop, Users } from 'lucide-react';
 
 const Skills = () => {
-  // State to track expanded skills
-  const [expandedSkills, setExpandedSkills] = useState({});
+  type ExpandedSkillsState = {
+    [key: string]: boolean; 
+  };  const [expandedSkills, setExpandedSkills] = React.useState<ExpandedSkillsState>({});
 
   const skillsData = {
     Research: {
@@ -34,7 +35,10 @@ const Skills = () => {
     }
   };
 
-  const toggleSkill = (category, skill) => {
+  type SkillCategory = string;
+  type SkillName = string;
+
+  const toggleSkill = (category: SkillCategory, skill: SkillName) => {
     setExpandedSkills(prev => ({
       ...prev,
       [`${category}-${skill}`]: !prev[`${category}-${skill}`]
