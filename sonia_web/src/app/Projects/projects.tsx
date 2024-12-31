@@ -60,16 +60,16 @@ type ProjectCardProps = {
 };
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, date, attachments }) => (
-  <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+  <div className="bg-gray-500 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
     <div className="mb-6">
       <h3 className="text-xl font-semibold mb-3">{title}</h3>
-      <p className="text-gray-600 mb-2">{description}</p>
-      <p className="text-sm text-gray-500 mb-4">{date}</p>
+      <p className="text-gray-300 mb-2">{description}</p>
+      <p className="text-sm text-gray-300 mb-4">{date}</p>
     </div>
     
     {attachments && attachments.length > 0 && (
       <div>
-        <h4 className="text-sm font-medium text-gray-700 mb-3">Related Files</h4>
+        <h4 className="text-sm font-medium text-gray-200 mb-3">Related Files</h4>
         <div className="grid grid-cols-2 gap-3">
           {attachments.map((attachment, index) => (
             <AttachmentCard key={index} {...attachment} />
@@ -150,10 +150,10 @@ const Projects = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 bg-gray-50">
+    <div className="min-h-screen bg-[#1a202c] text-white px-4">
       <div className="mb-12 text-center">
         <h2 className="text-3xl font-bold mb-4">Projects & Documentation</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+        <p className="text-gray-400 max-w-2xl mx-auto">
           A comprehensive collection of research initiatives, professional projects, and associated documentation showcasing healthcare improvement, data analysis, and clinical research work.
         </p>
       </div>
