@@ -8,7 +8,7 @@
 
 const Contact = () => {
     return(
-        <div className="py-10 px-4 sm:px-6 lg:px-8 bg-[#1a202c] text-white">
+        <div className="py-10 px-4 sm:px-6 lg:px-8 bg-[#1a202c] text-white" id='contact'>
                  <div className="max-w-7xl mx-auto">
                    <h2 className="text-3xl font-bold mb-8 text-center">Get in Touch</h2>
                    <div className="flex flex-col items-center space-y-4">
@@ -22,9 +22,7 @@ const Contact = () => {
                      </a>
                      <div className="flex space-x-4 mt-4">
                        <a
-                         href="#"
-                         target="_blank"
-                         rel="noopener noreferrer"
+                         href="#about"
                          className="p-2 rounded-full hover:bg-blue-600/20 transition-colors"
                        >
                          <ExternalLink className="w-6 h-6" />
