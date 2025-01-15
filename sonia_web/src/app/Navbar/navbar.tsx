@@ -19,7 +19,7 @@ const Navbar = () => {
     <nav className="relative bg-[#1a202c] text-white z-50 w-full">
       <div className="flex justify-between items-center py-4 sm:py-6 px-4 sm:px-8 lg:px-12">
         <div className="text-xl font-bold hover:text-blue-600 active:text-blue-600">
-          <Link href="#logo">
+          <Link href="#about">
             <h1 className="text-xl font-bold">VS</h1>
           </Link>
         </div>
@@ -34,7 +34,7 @@ const Navbar = () => {
 
         <ul className="hidden lg:flex justify-between space-x-12 text-xl xl:text-2xl pr-4 xl:pr-20">
           <li className="hover:text-blue-600 active:text-blue-600">
-            <Link href="#about">About</Link>
+            <Link href="#aboutme">About</Link>
           </li>
           <li className="hover:text-blue-600 active:text-blue-600">
             <Link href="#skills">Skills</Link>

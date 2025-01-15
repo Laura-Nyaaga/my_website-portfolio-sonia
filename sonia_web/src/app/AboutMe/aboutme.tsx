@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const AboutMe = () => {
     return (
-        <div className="min-h-screen bg-[#1a202c] text-white px-4 py-16">
+        <div className="min-h-screen bg-[#1a202c] text-white px-4 pt-16" id="aboutme">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div className="flex justify-center md:justify-start">
@@ -44,7 +44,7 @@ const AboutMe = () => {
                 </button>
                 </a>
   
-                <a href="https://www.linkedin.com/in/laura-nyaaga-434b8b307"
+                <a href="https://www.linkedin.com/in/venesa-sonia"
                   target="_blank"
                   rel="noopener noreferrer">
                 <button className="flex items-center space-x-2 border border-blue-600 hover:bg-blue-600/20 px-6 py-3 rounded-full transition-colors">

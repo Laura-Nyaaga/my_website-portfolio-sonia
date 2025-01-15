@@ -46,15 +46,15 @@ const Skills = () => {
   };
 
   return (
-    <section className="min-h-screen bg-[#1a202c] text-white px-4">
+    <section className="min-h-screen bg-[#1a202c] text-white px-4" id='skills'>
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12">Skills & Expertise</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 pt-4">Skills & Expertise</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {Object.entries(skillsData).map(([category, { icon, items }]) => (
             <div 
               key={category}
-              className="bg-[#1a202c] text-white border- bg-gray-600 rounded-lg p-6 hover:shadow-lg transition-all duration-300"
+              className="bg-[#1a202c] text-white border-2 border-gray-600 rounded-lg p-6 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-center space-x-3 mb-6 cursor-pointer">
                 <div className="text-blue-400">
@@ -79,7 +79,7 @@ const Skills = () => {
                     </div>
 
                     {expandedSkills[`${category}-${skill}`] && (
-                      <div className="ml-7 p-4 bg-[#d1d7cb] text-black rounded-md shadow-md transition-all duration-300">
+                      <div className="ml-7 p-4 bg-gray-400 text-black rounded-md shadow-md transition-all duration-300">
                         <p className="text-base">{description}</p>
                       </div>
                     )}

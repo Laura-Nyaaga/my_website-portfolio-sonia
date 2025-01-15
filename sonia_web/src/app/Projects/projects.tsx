@@ -1,21 +1,99 @@
-
-
 "use client";
-import React from 'react';
-import {FileText, FileSpreadsheet,LucidePresentation, LucideIcon, } from 'lucide-react';
+import React, { useState } from 'react';
+import { FileText, FileSpreadsheet, LucideIcon, X, ZoomIn, ZoomOut } from 'lucide-react';
 import Image from 'next/image';
 
+// Attachment Images
+const projectAttachmentImages = {
+  'Sexual Harassment Survey Research': {
+    'Workplace Survey Form': '/images/sexual_harassment_survey.png'
+  },
+  'Project and Communication Management': {
+    'Project Management': '/images/project_management.png',
+    'Email Management': '/images/email_management.png'
+  },
+  'Healthcare Expense Management': {
+    'Expense Tracker': '/images/tracking_office_expenses.png'
+  },
+  'Social Media Marketing Analytics': {
+    'Marketing Analytics': '/images/social_media_account.png'
+  },
+  'AWS Conference Travel Pack': {
+    'Travel Documentation': '/images/travel_management.png'
+  },
+  'Patient Management': {
+    'Patient Scheduling': '/images/patient_scheduling.png'
+  }
+};
+
+// Modal File Preview
+const ImagePreviewModal = ({ isOpen, onClose, imageSrc, imageAlt }) => {
+  const [scale, setScale] = useState(1);
+  
+  const handleZoomIn = () => setScale(prev => Math.min(prev + 0.2, 3));
+  const handleZoomOut = () => setScale(prev => Math.max(prev - 0.2, 0.5));
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center backdrop-blur-sm">
+      <div className="relative w-full h-full flex items-center justify-center p-4">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 bg-[#1a202c] rounded-full hover:bg-gray-200 transition-colors z-50"
+          aria-label="Close modal"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        
+        <div className="absolute top-4 left-4 space-x-2 z-50">
+          <button
+            onClick={handleZoomIn}
+            className="p-2 bg-[#1a202c] rounded-full hover:bg-gray-200 transition-colors"
+            aria-label="Zoom in"
+          >
+            <ZoomIn className="w-6 h-6" />
+          </button>
+          <button
+            onClick={handleZoomOut}
+            className="p-2 bg-[#1a202c] rounded-full hover:bg-gray-200 transition-colors"
+            aria-label="Zoom out"
+          >
+            <ZoomOut className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="relative max-w-4xl max-h-[90vh] overflow-hidden">
+          <div className="relative w-full h-full">
+            <img
+              src={imageSrc}
+              alt={imageAlt}
+              className="max-w-full max-h-[90vh] object-contain transition-transform duration-200"
+              style={{ transform: `scale(${scale})` }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// FilePreview 
 type FilePreviewProps = {
   type: "form" | "spreadsheet" | "presentation" | "document";
   title: string;
+  projectTitle: string;
 };
-const FilePreview: React.FC<FilePreviewProps> = ({ type, title }) => {
+
+const FilePreview: React.FC<FilePreviewProps> = ({ type, title, projectTitle }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const getPreviewStyle = () => {
     switch (type) {
       case 'form':
-        return 'bg-purple-100';
+        return 'bg-blue-100';
       case 'spreadsheet':
-        return 'bg-green-100';
+        return 'bg-gray-200';
       case 'document':
         return 'bg-blue-100';
       case 'presentation':
@@ -25,22 +103,46 @@ const FilePreview: React.FC<FilePreviewProps> = ({ type, title }) => {
     }
   };
 
+  const imageSrc = projectAttachmentImages[projectTitle]?.[title] || '/images/default-preview.png';
+
   return (
-    <div className={`rounded-lg p-4 ${getPreviewStyle()} flex items-center justify-center h-32 mb-2`}>
-      <Image src="/images/sony.png" alt={`Preview for ${title}`} width={100} height={100} className="max-h-full object-contain" />
-    </div>
+    <>
+      <div 
+        className={`rounded-lg p-4 ${getPreviewStyle()} flex items-center justify-center h-32 mb-2 cursor-pointer 
+          transform transition-all duration-300 hover:scale-105 hover:shadow-xl relative group`}
+        onClick={() => setIsModalOpen(true)}
+      >
+        <Image 
+          src={imageSrc}
+          alt={`Preview for ${title}`}
+          width={200}
+          height={200}
+          className="max-h-full object-contain transition-transform duration-300 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-lg" />
+      </div>
+
+      <ImagePreviewModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        imageSrc={imageSrc}
+        imageAlt={`Preview for ${title}`}
+      />
+    </>
   );
 };
 
+// AttachmentCard 
 type AttachmentCardProps = {
   title: string;
   type: "form" | "spreadsheet" | "presentation" | "document";
-  icon: LucideIcon; 
+  icon: LucideIcon;
+  projectTitle: string;
 };
 
-const AttachmentCard: React.FC<AttachmentCardProps> = ({ title, type, icon: Icon }) => (
+const AttachmentCard: React.FC<AttachmentCardProps> = ({ title, type, icon: Icon, projectTitle }) => (
   <div className="bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-    <FilePreview type={type} title={title} />
+    <FilePreview type={type} title={title} projectTitle={projectTitle} />
     <div className="flex items-center space-x-2">
       <Icon className="w-4 h-4 text-gray-500" />
       <span className="text-sm text-gray-700 truncate">{title}</span>
@@ -48,6 +150,7 @@ const AttachmentCard: React.FC<AttachmentCardProps> = ({ title, type, icon: Icon
   </div>
 );
 
+// ProjectCard 
 type ProjectCardProps = {
   title: string;
   description: string;
@@ -60,19 +163,23 @@ type ProjectCardProps = {
 };
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, date, attachments }) => (
-  <div className="bg-gray-500 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+  <div className="bg-[#1a202c] rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow border-2 border-gray-400">
     <div className="mb-6">
       <h3 className="text-xl font-semibold mb-3">{title}</h3>
-      <p className="text-gray-300 mb-2">{description}</p>
+      <p className="text-gray-400 mb-2">{description}</p>
       <p className="text-sm text-gray-300 mb-4">{date}</p>
     </div>
     
     {attachments && attachments.length > 0 && (
       <div>
         <h4 className="text-sm font-medium text-gray-200 mb-3">Related Files</h4>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {attachments.map((attachment, index) => (
-            <AttachmentCard key={index} {...attachment} />
+            <AttachmentCard 
+              key={index} 
+              {...attachment} 
+              projectTitle={title}
+            />
           ))}
         </div>
       </div>
@@ -80,6 +187,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, date, att
   </div>
 );
 
+// Projects Component
 const Projects = () => {
   const projects = [
     {
@@ -89,23 +197,23 @@ const Projects = () => {
       attachments: [
         {
           title: "Workplace Survey Form",
-          type: "form" as "form",
-          icon: LucidePresentation as LucideIcon,
+          type: "document" as "document",
+          icon: FileText as LucideIcon,
         }
       ]
     },
     {
-      title: "ICU Nurses Knowledge Assessment",
-      description: "Conducting research on ICU nurses' knowledge, attitude, and practice in utilizing mechanical ventilators in Nakuru County. This study aims to improve critical care delivery and patient outcomes.",
-      date: "2023-Present",
+      title: "Project and Communication Management",
+      description: "Demonstrated strong organizational and communication skills by efficiently managing collaborative projects and email correspondence. Coordinated document access and permissions for research contributors while maintaining clear communication and secure sharing protocols. Effectively handled email inbox management, scheduled virtual meetings, and ensured timely responses to maintain seamless project workflows.",
+      date: "2024-Present",
       attachments: [
         {
-          title: "ICU Assessment Document",
-          type: "document" as "document",
-          icon: FileText as LucideIcon,
+          title: "Project Management",
+          type: "spreadsheet" as "spreadsheet",
+          icon: FileSpreadsheet as LucideIcon,
         },
         {
-          title: "Research Collaboration",
+          title: "Email Management",
           type: "document" as "document",
           icon: FileText as LucideIcon,
         }
@@ -130,8 +238,8 @@ const Projects = () => {
       attachments: [
         {
           title: "Marketing Analytics",
-          type: "spreadsheet" as "spreadsheet",
-          icon: FileSpreadsheet as LucideIcon,
+          type: "document" as "document",
+          icon: FileText as LucideIcon,
         }
       ]
     },
@@ -142,15 +250,27 @@ const Projects = () => {
       attachments: [
         {
           title: "Travel Documentation",
-          type: "presentation" as "presentation",
-          icon: LucidePresentation as LucideIcon,
+          type: "spreadsheet" as "spreadsheet",
+          icon: FileSpreadsheet as LucideIcon,
+        }
+      ]
+    },
+    {
+      title: "Patient Management",
+      description: "Developed a patient scheduling system with an intuitive calendar interface, enabling efficient management of appointments, practitioner availability, and patient workflows. The system includes features such as categorized patient lists, real-time status updates, and color-coded time blocks to streamline clinic operations and improve healthcare service delivery",
+      date: "2023 - Present",
+      attachments: [
+        {
+          title: "Patient Scheduling",
+          type: "document" as "document",
+          icon: FileText as LucideIcon,
         }
       ]
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#1a202c] text-white px-4">
+    <div className="min-h-screen bg-[#1a202c] text-white px-4 py-8" id='projects'>
       <div className="mb-12 text-center">
         <h2 className="text-3xl font-bold mb-4">Projects & Documentation</h2>
         <p className="text-gray-400 max-w-2xl mx-auto">
@@ -158,58 +278,15 @@ const Projects = () => {
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {projects.map((project, index) => (
-          <ProjectCard key={index} {...project} />
-        ))}
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projects.map((project, index) => (
+            <ProjectCard key={index} {...project} />
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
 export default Projects;
-
-
-
-
-
-
-
-
-
-
-
-// const Projects = () => {
-//     const projects = [
-//             {
-//               title: 'BREATHE Trial Research',
-//               description: 'Led research study comparing efficacy of HFO vs SFO in reducing mortality and hospital stay. Conducted key informant interviews and analyzed complex datasets.',
-//                role: 'Research Assistant',
-//                duration: '2022 - Present'
-//              },
-//             {
-//               title: 'Health & Wellness Clinic Management',
-//               description: 'Managed virtual healthcare operations including patient scheduling, telehealth support, and EHR system administration.',
-//               role: 'Virtual Assistant',
-//                duration: '2021 - 2022'
-//              }
-//            ];
-//     return(
-//         <section className="bg-[#1a202c] px-4 sm:px-6 lg:px-8 text-white">
-//                 <div className="max-w-7xl mx-auto">
-//                   <h2 className="text-3xl font-bold mb-8 text-center">Featured Projects</h2>
-//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                     {projects.map((project) => (
-//                       <div key={project.title} className="bg-navy-800 p-6 rounded-lg hover:bg-navy-700 transition-colors">
-//                      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-//                          <p className="text-gray-400 mb-4">{project.role} | {project.duration}</p>
-//                         <p className="text-gray-300">{project.description}</p>
-//                        </div>
-//                     ))}
-//                   </div>
-//                  </div>
-//         </section>
-//     );
-// };
-
-// export default Projects;
