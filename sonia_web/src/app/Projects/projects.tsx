@@ -3,8 +3,22 @@ import React, { useState } from 'react';
 import { FileText, FileSpreadsheet, LucideIcon, X, ZoomIn, ZoomOut } from 'lucide-react';
 import Image from 'next/image';
 
+
+interface ProjectAttachmentImages {
+  [key: string]: {
+    [key: string]: string;
+  };
+}
+
 // Attachment Images
-const projectAttachmentImages = {
+
+interface ProjectImages {
+  [projectTitle: string]: {
+    [attachmentTitle: string]: string;
+  };
+}
+
+const projectAttachmentImages: ProjectImages = {
   'Sexual Harassment Survey Research': {
     'Workplace Survey Form': '/images/sexual_harassment_survey.png'
   },
@@ -26,8 +40,15 @@ const projectAttachmentImages = {
   }
 };
 
+interface ImagePreviewModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  imageSrc: string;
+  imageAlt: string;
+}
+
 // Modal File Preview
-const ImagePreviewModal = ({ isOpen, onClose, imageSrc, imageAlt }) => {
+const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({ isOpen, onClose, imageSrc, imageAlt }) => {
   const [scale, setScale] = useState(1);
   
   const handleZoomIn = () => setScale(prev => Math.min(prev + 0.2, 3));
